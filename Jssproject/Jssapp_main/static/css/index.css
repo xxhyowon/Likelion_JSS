@@ -12,6 +12,7 @@ body{
     flex-direction: column;
     align-items: center;
     margin-bottom: 30px;
+    margin: 50px;
 }
 
 a{
