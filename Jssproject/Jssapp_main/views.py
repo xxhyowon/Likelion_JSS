@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from .forms import JssForm
-from .models import Jasoseol
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import JssForm, CommentForm
+from .models import Jasoseol, Comment
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
@@ -32,12 +32,13 @@ def create(request) :
 
 @login_required(login_url='/login/')
 def detail(request, jss_id) :
-    try :
-        my_jss = Jasoseol.objects.get(pk=jss_id)
-    except :
-        raise Http404
-    # my_jss = get_object_or_404(Jasoseol, pk = jss_id)
-    return render(request, 'detail.html',{'my_jss' : my_jss})
+    # try :
+    #     my_jss = Jasoseol.objects.get(pk=jss_id)
+    # except :
+    #     raise Http404
+    my_jss = get_object_or_404(Jasoseol, pk = jss_id)
+    comment_form = CommentForm()
+    return render(request, 'detail.html', {'my_jss' : my_jss},{'comment_form' : comment_form})
 
 def delete(request, jss_id) :
     my_jss = Jasoseol.objects.get(pk=jss_id)
@@ -59,3 +60,22 @@ def update(request, jss_id) :
     else :
         raise PermissionDenied
     return render(request, 'create.html', {'jss_form' : jss_form})
+
+def create_comment(request) :
+    # if request method == 'POST' :
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            temp_form = comment_form.save(commit=False)
+            temp_form.author = request.user
+            temp_form.jasoseol = Jasoseol.objects.get(pk=jss_id)
+            return redirect('detail',jss_id)
+
+def delete_comment(request, jss_id, comment_id) :
+    my_comment = Comment.objects.get(pk = comment_id)
+    if request.user == my_comment.author :
+        my_comment.delete()
+        return redirect('detail',jss_id)
+    else :
+        return PermissionDenied
+
+
