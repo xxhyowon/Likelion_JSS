@@ -48,9 +48,6 @@ def delete(request, jss_id) :
         my_jss.delete()
         return redirect('index')
     else :
-
-
-        
         raise PermissionDenied
 
 def update(request, jss_id) :
