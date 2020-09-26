@@ -23,6 +23,8 @@ def create(request) :
     if request.method == 'POST' :
         filled_form = JssForm(request.POST)
         if filled_form.is_valid():
+
+            
             temp_form = filled_form.save(commit=False)
             temp_form.author = request.user
             temp_form.save()
