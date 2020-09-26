@@ -24,7 +24,7 @@ def create(request) :
         filled_form = JssForm(request.POST)
         if filled_form.is_valid():
 
-            
+
             temp_form = filled_form.save(commit=False)
             temp_form.author = request.user
             temp_form.save()
@@ -48,6 +48,9 @@ def delete(request, jss_id) :
         my_jss.delete()
         return redirect('index')
     else :
+
+
+        
         raise PermissionDenied
 
 def update(request, jss_id) :
