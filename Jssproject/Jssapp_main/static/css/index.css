@@ -6,7 +6,7 @@ body{
 .make_jss, .all_jss{
     width: 200px;
     height: 300px;
-    border : 1px black solid;
+    border : 1px orange solid;
     display : flex;
     /* flex : 자식요소들 컨트롤 */
     flex-direction: column;
