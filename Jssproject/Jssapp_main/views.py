@@ -23,6 +23,8 @@ def create(request) :
     if request.method == 'POST' :
         filled_form = JssForm(request.POST)
         if filled_form.is_valid():
+
+
             temp_form = filled_form.save(commit=False)
             temp_form.author = request.user
             temp_form.save()
@@ -32,11 +34,11 @@ def create(request) :
 
 @login_required(login_url='/login/')
 def detail(request, jss_id) :
-    # try :
-    #     my_jss = Jasoseol.objects.get(pk=jss_id)
-    # except :
-    #     raise Http404
-    my_jss = get_object_or_404(Jasoseol, pk = jss_id)
+    try :
+        my_jss = Jasoseol.objects.get(pk=jss_id)
+    except :
+        raise Http404
+    # my_jss = get_object_or_404(Jasoseol, pk = jss_id)
     comment_form = CommentForm()
     return render(request, 'detail.html', {'my_jss' : my_jss},{'comment_form' : comment_form})
 
